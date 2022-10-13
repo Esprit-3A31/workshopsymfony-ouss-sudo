@@ -39,7 +39,7 @@ nbr= {{ x }}
 {% for m in listFormation %}
     {%set a=max(m.nb_participants,a) %}
 {% endfor %}
-<table border="2">
+<table border="5">
 
 <tr>
     <td>ref </td>
@@ -73,4 +73,4 @@ nbr= {{ x }}
     {% endfor %}
    
 </table>
-<h3 style="color: Red">Total des participants : {{ somme }}</h3>
+<h3 style="color: green">Total des participants : {{ somme }}</h3>

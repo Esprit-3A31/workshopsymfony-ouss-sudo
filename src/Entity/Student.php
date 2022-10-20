@@ -8,28 +8,69 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
 class Student
 {
+
     #[ORM\Id]
-    //#[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?string $ncc = null;
+    private ?string $nce = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
-
-    public function ncc(): ?string
+    /**
+     * @return string|null
+     */
+    public function getNce(): ?string
     {
-        return $this->ncc;
+        return $this->nce;
     }
 
-    public function getName(): ?string
+    /**
+     * @param string|null $nce
+     */
+    public function setNce(?string $nce): void
     {
-        return $this->name;
+        $this->nce = $nce;
     }
 
-    public function setName(string $name): self
+    /**
+     * @return string|null
+     */
+
+
+    #[ORM\Column(length: 100)]
+    private ?string $username = null;
+
+    #[ORM\ManyToOne(inversedBy: 'students')]
+    #[ORM\JoinColumn(onDelete:"CASCADE")]
+
+    private ?ClassRoom $classRoom = null;
+
+
+
+
+
+    public function getUsername(): ?string
     {
-        $this->name = $name;
+        return $this->username;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
 
         return $this;
     }
+
+    public function getClassRoom(): ?ClassRoom
+    {
+        return $this->classRoom;
+    }
+
+    public function setClassRoom(?ClassRoom $classRoom): self
+    {
+        $this->classRoom = $classRoom;
+
+        return $this;
+    }
+
+
+
+
 }

@@ -2,15 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\ClassRoom;
+use App\Form\AjoutType;
+use App\Repository\ClassRoomRepository;
+use App\Repository\ClubRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\ClassroomRepository;
-use App\Form\ClassroomType;
-use App\Entity\Classroom;
-use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\HttpFoundation\Request;
-use App\Form\SubmitType;
 
 class ClassroomController extends AbstractController
 {
@@ -21,54 +21,57 @@ class ClassroomController extends AbstractController
             'controller_name' => 'ClassroomController',
         ]);
     }
-
-
-    #[Route('/list', name: 'list_class')]
-    public function listClassroom(ClassroomRepository $repository){
-        $classroom=$repository->findAll();
-        return $this->render("classroom/list.html.twig",
-        array('list_class'=>$classroom));
+    #[Route('/listeclassroom', name: 'app_classroom')]
+    public function listclub(ClassRoomRepository $repository)
+    {
+        $clasroom=$repository->findAll();
+        return $this->render("classroom/liste.html.twig",array("classroom"=>$clasroom));
     }
 
-    #[Route('/addClass', name: 'addClass')]
-    public function addClassroom(Request  $request,ManagerRegistry $doctrine)
+
+    #[Route('/addClassroomForm', name: 'addClassroomForm')]
+    public function addClassroomForm(Request  $request,ManagerRegistry $doctrine)
     {
-        $classroom= new  Classroom();
-        $form= $this->createForm(ClassroomType::class,$classroom);
+        $classroom= new  ClassRoom();
+        $form= $this->createForm(AjoutType::class,$classroom);
         $form->handleRequest($request) ;
         if($form->isSubmitted()){
-             $em= $doctrine->getManager();
-             $em->persist($classroom);
-             $em->flush();
-             return  $this->redirectToRoute("addClass");
-         }
-        return $this->renderForm("classroom/add.html.twig",array("Form_class"=>$form));
+            $em= $doctrine->getManager();
+            $em->persist($classroom);
+            $em->flush();
+            return  $this->redirectToRoute("addClassroomForm");
+        }
+        return $this->renderForm("classroom/add.html.twig",array("Formclassroom"=>$form));
     }
 
-    #[Route('/update/{id}', name: 'update_class')]
-    public function updateClassroom($id,ClassroomRepository  $repository,Request  $request,ManagerRegistry $doctrine)
+
+
+
+    #[Route('/updateclassroom/{id}', name: 'update_classroom')]
+    public function updateStudentForm($id,ClassRoomRepository  $repository,Request  $request,ManagerRegistry $doctrine)
     {
         $classroom= $repository->find($id);
-        $form= $this->createForm(ClassroomType::class,$classroom);
+        $form= $this->createForm(AjoutType::class,$classroom);
         $form->handleRequest($request) ;
         if($form->isSubmitted()){
             $em= $doctrine->getManager();
             $em->flush();
-            return  $this->redirectToRoute("addClass");
+            return  $this->redirectToRoute("addClassroomForm");
         }
-        return $this->renderForm("classroom/update.html.twig",array("Form_class"=>$form));
+        return $this->renderForm("classroom/update.html.twig",array("Formclassroom"=>$form));
     }
 
-    #[Route('/remove/{id}', name: 'remove_class')]
-    public function remove(ManagerRegistry $doctrine,$id,ClassroomRepository $repository)
+    #[Route('/removeclassroom/{id}', name: 'remove_classroom')]
+    public function remove(ManagerRegistry $doctrine,$id,ClassRoomRepository $repository)
     {
-        $classroom= $repository->find($id);
+        $student= $repository->find($id);
         $em= $doctrine->getManager();
-        $em->remove($classroom);
+        $em->remove($student);
         $em->flush();
-        return $this->redirectToRoute("addClass");
+        return $this->redirectToRoute("addClassroomForm");
     }
 
-    
+
+
 
 }

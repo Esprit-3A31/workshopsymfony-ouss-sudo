@@ -6,6 +6,7 @@ use App\Entity\ClassRoom;
 use App\Form\AjoutType;
 use App\Repository\ClassRoomRepository;
 use App\Repository\ClubRepository;
+use App\Repository\StudentRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,6 +70,15 @@ class ClassroomController extends AbstractController
         $em->remove($student);
         $em->flush();
         return $this->redirectToRoute("addClassroomForm");
+    }
+    #[Route('/showClassroom/{id}', name: 'showClassroom')]
+    public function showClassroom(StudentRepository $repo,$id,ClassroomRepository $repository)
+    {
+        $classroom= $repository->find($id);
+        $students= $repo->getStudentsByClassroom($id);
+        return $this->render("student/showClassroom.html.twig",
+            array("classroom"=>$classroom,
+                "students"=>$students));
     }
 
 

@@ -1,4 +1,12 @@
-{% for c in student %}
+{% for c in students %}
  name : {{ c.username }}
 nce : {{ c.nce }}
+{% endfor %}
+<br>
+<br>
+
+
+{% for c in topStudent %}
+    name : {{ c.username }}
+    nce : {{ c.nce }}
 {% endfor %}
